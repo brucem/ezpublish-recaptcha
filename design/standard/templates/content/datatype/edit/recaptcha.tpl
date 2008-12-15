@@ -1,12 +1,12 @@
 {def $lang=ezini('Display','OverrideLang','recaptcha.ini')} 
 {if $lang|eq('')}{set $lang=$attribute.language_code|extract_left(2)}{/if}
 <script type="text/javascript">
-RecaptchaTheme='{ezini('Display','Theme','recaptcha.ini')}';
-RecaptchaLang='{$lang}';
+var RecaptchaTheme='{ezini('Display','Theme','recaptcha.ini')}';
+var RecaptchaLang='{$lang}';
 {literal}
 var RecaptchaOptions = {
 theme: RecaptchaTheme,
-lang: RecaptchaLang,
+lang: RecaptchaLang
 };
 {/literal}
 </script>

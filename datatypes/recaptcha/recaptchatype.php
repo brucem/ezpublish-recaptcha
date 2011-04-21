@@ -52,7 +52,7 @@ class recaptchaType extends eZDataType
 
     if ( $classAttribute->attribute( 'is_information_collector' ) or $this->reCAPTCHAValidate($http) )
       return eZInputValidator::STATE_ACCEPTED;
-    $objectAttribute->setValidationError(ezi18n( 'extension/recaptcha', "The reCAPTCHA wasn't entered correctly. Please try again."));
+    $objectAttribute->setValidationError(ezpI18n::tr( 'extension/recaptcha', "The reCAPTCHA wasn't entered correctly. Please try again."));
     return eZInputValidator::STATE_INVALID;
   }
 
@@ -60,7 +60,7 @@ class recaptchaType extends eZDataType
   {
     if ($this->reCAPTCHAValidate($http))
       return eZInputValidator::STATE_ACCEPTED;
-    $objectAttribute->setValidationError(ezi18n( 'extension/recaptcha', "The reCAPTCHA wasn't entered correctly. Please try again."));
+    $objectAttribute->setValidationError(ezpI18n::tr( 'extension/recaptcha', "The reCAPTCHA wasn't entered correctly. Please try again."));
     return eZInputValidator::STATE_INVALID;
   }
 

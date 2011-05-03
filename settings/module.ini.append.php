@@ -3,4 +3,6 @@
 [ModuleSettings]
 ExtensionRepositories[]=recaptcha
 
+ModuleList[]=recaptcha
+
 */ ?>

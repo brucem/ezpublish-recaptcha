@@ -13,3 +13,5 @@ http://projects.ez.no/recaptcha/forum/general/js_issue_with_ie7
 + Added utility class to make integration into 3rd party code easier
 + eZ Publish 4.4 compatibility : replacing calls to ezi18n by ezpI18n::tr by Nicolas Pastorino
 + Update recapture php library to version 1.11 to update API end point.
++ eZ Publish 4.x Module compatability changes  by Filippo De Santis
+http://projects.ez.no/recaptcha/forum/general/compatibility_patch_for_ez4_1_3#msg22158

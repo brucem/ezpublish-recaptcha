@@ -3,7 +3,7 @@
 [TemplateSettings]
 ExtensionAutoloadPath[]=recaptcha
 
-#[RegionalSettings]
-#TranslationExtensions[]=recaptcha
+[RegionalSettings]
+TranslationExtensions[]=recaptcha
 
 */ ?>

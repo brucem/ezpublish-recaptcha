@@ -1,5 +1,8 @@
 <?php /* #?ini charset="utf-8"?
 
+[PublishSettings]
+NewObjectsOnly=false
+
 [Keys]
 # Visit http://recaptcha.net/api/getkey to signup and get your own API keys
 #

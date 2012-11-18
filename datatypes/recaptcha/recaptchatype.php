@@ -50,6 +50,12 @@ class recaptchaType extends eZDataType
   {
     $classAttribute = $objectAttribute->contentClassAttribute();
 
+    $ini = eZINI::instance( 'recaptcha.ini' );
+    $newOjbectsOnly = $ini->variable( 'PublishSettings', 'NewObjectsOnly' ) == 'true';
+
+    if ( $newOjbectsOnly && $objectAttribute->attribute( 'object' )->attribute( 'status' ) )
+       return eZInputValidator::STATE_ACCEPTED;
+
     if ( $classAttribute->attribute( 'is_information_collector' ) or $this->reCAPTCHAValidate($http) )
       return eZInputValidator::STATE_ACCEPTED;
     $objectAttribute->setValidationError(ezpI18n::tr( 'extension/recaptcha', "The reCAPTCHA wasn't entered correctly. Please try again."));

@@ -51,4 +51,10 @@ Theme=white
 #   Turkish     tr
 OverrideLang=
 
+[PublishSettings]
+# Allows to use recaptcha only on newly created objects and to ignore it on objects that are re-edited.
+# Usefull if you want to use recaptcha only for user/register and not on user/edit
+# Another use would be to use recaptcha only when adding comments and not when editing them.
+NewObjectsOnly=false
+
 */ ?>

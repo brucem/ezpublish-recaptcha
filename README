@@ -15,7 +15,7 @@ deciphering a word that was not readable by computers.
 reCAPTCHA is a project of the School of Computer Science at Carnegie Mellon
 University.
 
-From: http://recaptcha.net/aboutus.html
+From: https://developers.google.com/recaptcha/
 
 
 Installation
@@ -31,7 +31,7 @@ Follow these steps to add the reCAPTCHA module to your eZ publish installation:
 
      If you already have the [ExtensionSettings] block, just add the second line.
 
-  3) Visit http://recaptcha.net/api/getkey to signup and get your own API keys
+  3) Visit https://www.google.com/recaptcha/admin to signup and get your own API keys
 
   4) Edit extension/settings/recaptcha.ini.append.php and add your API keys
 

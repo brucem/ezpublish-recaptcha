@@ -1,7 +1,7 @@
 <?php /* #?ini charset="utf-8"?
 
 [Keys]
-# Visit http://recaptcha.net/api/getkey to signup and get your own API keys
+# Visit https://www.google.com/recaptcha to signup and get your own API keys
 #
 # If you are using in a single site setup you can simply set PublicKey &
 # PrivateKey to the key values. e.g.
@@ -27,7 +27,7 @@ PrivateKey=Enter your Private Key here
 
 [Display]
 # Possible themes 'red' | 'white' | 'blackglass' | 'clean' | 'custom'
-# see http://recaptcha.net/apidocs/captcha/client.html#look-n-feel
+# see https://developers.google.com/recaptcha/old/docs/customization
 #
 # If you choose a value that is not supported the captcha will default to the
 # red theme

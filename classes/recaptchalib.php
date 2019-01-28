@@ -120,13 +120,15 @@ function recaptcha_get_html ($pubkey, $error = null, $use_ssl = false)
            $errorpart = "&amp;error=" . $error;
         }
 
-        return '<script type="text/javascript" src="'. $server . '.js?render=' . $pubkey . $errorpart . '"></script>
-
+        return '<script type="text/javascript" src="'. $server . '.js"></script>'
+               . '<div class="g-recaptcha" data-sitekey="' . $pubkey . '"></div>';
+        /*
 	<noscript>
   		<iframe src="'. $server . '/noscript?k=' . $pubkey . $errorpart . '" height="300" width="500" frameborder="0"></iframe><br/>
   		<textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
   		<input type="hidden" name="recaptcha_response_field" value="manual_challenge"/>
 	</noscript>';
+        */
 }
 
 

@@ -70,11 +70,24 @@ class reCAPTCHATemplateOperator {
         $currentUser = eZUser::currentUser();
         $accessAllowed = $currentUser->hasAccessTo( 'recaptcha', 'bypass_captcha' );
         if ($accessAllowed["accessWord"] == 'yes')
+        {
           $operatorValue = 'User bypasses CAPTCHA';
+        }
         else
+        {
           // Run the HTML generation code from the reCAPTCHA PHP library 
-  				$operatorValue = recaptcha_get_html($key);
-				break;
+             if( $_SERVER['SERVER_PORT'] == 443 )
+             {
+                 $operatorValue = recaptcha_get_html( $key, '', true );
+             }
+             else
+             {
+                 $operatorValue = recaptcha_get_html( $key, '', false );
+             }
+         }
+
+         break;
+
 		}
 	}
 };

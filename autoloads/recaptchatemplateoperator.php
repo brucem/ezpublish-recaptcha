@@ -65,6 +65,7 @@ class reCAPTCHATemplateOperator {
             // try our luck with the first entry
             $key = array_shift($key);
         }
+
         // check if the current user is able to bypass filling in the captcha and
         // return nothing so that no captcha is displayed
         $currentUser = eZUser::currentUser();

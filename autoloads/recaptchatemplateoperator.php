@@ -65,16 +65,30 @@ class reCAPTCHATemplateOperator {
             // try our luck with the first entry
             $key = array_shift($key);
         }
+
         // check if the current user is able to bypass filling in the captcha and
         // return nothing so that no captcha is displayed
         $currentUser = eZUser::currentUser();
         $accessAllowed = $currentUser->hasAccessTo( 'recaptcha', 'bypass_captcha' );
         if ($accessAllowed["accessWord"] == 'yes')
+        {
           $operatorValue = 'User bypasses CAPTCHA';
+        }
         else
+        {
           // Run the HTML generation code from the reCAPTCHA PHP library 
-  				$operatorValue = recaptcha_get_html($key);
-				break;
+             if( $_SERVER['SERVER_PORT'] == 443 )
+             {
+                 $operatorValue = recaptcha_get_html( $key, '', true );
+             }
+             else
+             {
+                 $operatorValue = recaptcha_get_html( $key, '', false );
+             }
+
+             break;
+         }
+
 		}
 	}
 };

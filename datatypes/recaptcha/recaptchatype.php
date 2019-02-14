@@ -106,13 +106,13 @@ class recaptchaType extends eZDataType
         // try our luck with the first entry
         $privatekey = array_shift($privatekey);
     }
+
     $recaptcha_challenge_field = $http->postVariable('recaptcha_challenge_field');
-    $recaptcha_response_field = $http->postVariable('recaptcha_response_field');
-    $resp = recaptcha_check_answer ($privatekey,
-                                $_SERVER["REMOTE_ADDR"],
-                                $recaptcha_challenge_field,
-                                $recaptcha_response_field);
-    return $resp->is_valid;
+    $recaptcha_response_field = $http->postVariable('g-recaptcha-response');
+
+    $recaptcha_response = recaptcha_check_answer( $privatekey, $_SERVER['REMOTE_ADDR'], $recaptcha_challenge_field, $_POST['g-recaptcha-response'] );
+
+    return $recaptcha_response->is_valid;
   }
 
 }

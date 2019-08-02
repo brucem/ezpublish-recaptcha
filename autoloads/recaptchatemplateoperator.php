@@ -1,4 +1,5 @@
 <?php
+
 /**
  * reCAPTCHA extension for eZ Publish
  * Written by Bruce Morrison <bruce@stuffandcontent.com>
@@ -19,65 +20,62 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-class reCAPTCHATemplateOperator {
-	
-	var $Operators;
+class reCAPTCHATemplateOperator
+{
 
-	function reCAPTCHATemplateOperator()
-	{
-		$this->Operators = array( 'recaptcha_get_html' );
-	}
+    public $Operators;
+
+    public function __construct()
+    {
+        $this->Operators = array('recaptcha_get_html');
+    }
 
 
-	function &operatorList()
-	{
-		return $this->Operators;
-	}
+    public function operatorList()
+    {
+        return $this->Operators;
+    }
 
-	function namedParameterPerOperator()
-	{
-		return true;
-	}
+    public function namedParameterPerOperator()
+    {
+        return true;
+    }
 
-	function namedParameterList()
-	{
-		return array( 
-			'recaptcha_get_html' => array(), 
-		);
-	}
+    public function namedParameterList()
+    {
+        return array(
+            'recaptcha_get_html' => array(
+                'key' => array(
+                    'type' => 'string',
+                    'required' => false,
+                    'default' => null
+                )
+            ),
+        );
+    }
 
-	function modify( &$tpl, &$operatorName, &$operatorParameters, &$rootNamespace, &$currentNamespace, &$operatorValue, &$namedParameters )
-	{
-		switch( $operatorName )
-		{
-			case 'recaptcha_get_html':
-		    include_once( 'extension/recaptcha/classes/recaptchalib.php' );
+    public function modify(
+        $tpl,
+        $operatorName,
+        $operatorParameters,
+        $rootNamespace,
+        $currentNamespace,
+        &$operatorValue,
+        $namedParameters
+    ) {
+        switch ($operatorName) {
+            case 'recaptcha_get_html':
 
-        // Retrieve the reCAPTCHA public key from the ini file                              
-        $ini = eZINI::instance( 'recaptcha.ini' );
-        $key = $ini->variable( 'Keys', 'PublicKey' );
-        if ( is_array($key) )
-        {
-          $hostname = eZSys::hostname();
-          if (isset($key[$hostname]))
-            $key = $key[$hostname];
-          else
-            // try our luck with the first entry
-            $key = array_shift($key);
+                $key = $namedParameters['key'];
+                if ($key == null) {
+                    $projectIni = \eZINI::instance('project.ini');
+                    $key = $projectIni->variable('Site', 'RecaptchaSiteKey');
+                }
+
+                $operatorValue = '
+                    <script type="text/javascript" src="https://www.google.com/recaptcha/api.js" charset="utf-8"></script>
+                    <div class="g-recaptcha" data-sitekey="' . $key . '" data-callback="recaptchaSuccess"></div>
+                ';
         }
-        // check if the current user is able to bypass filling in the captcha and
-        // return nothing so that no captcha is displayed
-        $currentUser = eZUser::currentUser();
-        $accessAllowed = $currentUser->hasAccessTo( 'recaptcha', 'bypass_captcha' );
-        if ($accessAllowed["accessWord"] == 'yes')
-          $operatorValue = 'User bypasses CAPTCHA';
-        else
-          // Run the HTML generation code from the reCAPTCHA PHP library 
-  				$operatorValue = recaptcha_get_html($key);
-				break;
-		}
-	}
+    }
 };
-
-?>
-

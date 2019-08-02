@@ -1,4 +1,5 @@
 <?php
+
 /**
  * reCAPTCHA extension for eZ Publish
  * Written by Bruce Morrison <bruce@stuffandcontent.com>
@@ -20,100 +21,82 @@
  */
 
 // Include the super class file
-include_once( "kernel/classes/ezdatatype.php" );
-// Include reCAPTCHA lib
-include_once( "extension/recaptcha/classes/recaptchalib.php" );
+include_once("kernel/classes/ezdatatype.php");
 
 // Define the name of datatype string
-define( "EZ_DATATYPESTRING_RECAPTCHA", "recaptcha" );
+define("EZ_DATATYPESTRING_RECAPTCHA", "recaptcha");
 
 
 class recaptchaType extends eZDataType
 {
-  /*!
-   Construction of the class, note that the second parameter in eZDataType 
-   is the actual name showed in the datatype dropdown list.
-  */
-  function recaptchaType()
-  {
-    $this->eZDataType( EZ_DATATYPESTRING_RECAPTCHA, "reCAPTCHA", 
-                           array( 'serialize_supported' => false,
-                                  'translation_allowed' => false ) );
-  }
-
-  /*!
-    Validates the input and returns true if the input was
-    valid for this datatype.
-  */
-  function validateObjectAttributeHTTPInput( $http, $base, 
-                                               $objectAttribute )
-  {
-    $classAttribute = $objectAttribute->contentClassAttribute();
-
-    $ini = eZINI::instance( 'recaptcha.ini' );
-    $newOjbectsOnly = $ini->variable( 'PublishSettings', 'NewObjectsOnly' ) == 'true';
-
-    if ( $newOjbectsOnly && $objectAttribute->attribute( 'object' )->attribute( 'status' ) )
-       return eZInputValidator::STATE_ACCEPTED;
-
-    if ( $classAttribute->attribute( 'is_information_collector' ) or $this->reCAPTCHAValidate($http) )
-      return eZInputValidator::STATE_ACCEPTED;
-    $objectAttribute->setValidationError(ezpI18n::tr( 'extension/recaptcha', "The reCAPTCHA wasn't entered correctly. Please try again."));
-    return eZInputValidator::STATE_INVALID;
-  }
-
-  function validateCollectionAttributeHTTPInput( $http, $base, $objectAttribute )
-  {
-    if ($this->reCAPTCHAValidate($http))
-      return eZInputValidator::STATE_ACCEPTED;
-    $objectAttribute->setValidationError(ezpI18n::tr( 'extension/recaptcha', "The reCAPTCHA wasn't entered correctly. Please try again."));
-    return eZInputValidator::STATE_INVALID;
-  }
-
-  function isIndexable()
-  {
-    return false;
-  }
-
-  function isInformationCollector()
-  {
-    return true;
-  }
-
-  function hasObjectAttributeContent( $contentObjectAttribute )
-  {
-    return false;
-  }
-
-  static function reCAPTCHAValidate( $http )
-  {
-    // check if the current user is able to bypass filling in the captcha and
-    // return true without checking if so
-    $currentUser = eZUser::currentUser();
-    $accessAllowed = $currentUser->hasAccessTo( 'recaptcha', 'bypass_captcha' );
-    if ($accessAllowed["accessWord"] == 'yes')
-      return true;
-
-    $ini = eZINI::instance( 'recaptcha.ini' );
-    // If PrivateKey is an array try and find a match for the current host
-    $privatekey = $ini->variable( 'Keys', 'PrivateKey' );
-    if ( is_array($privatekey) )
+    public function __construct()
     {
-      $hostname = eZSys::hostname();
-      if (isset($privatekey[$hostname]))
-        $privatekey = $privatekey[$hostname];
-      else
-        // try our luck with the first entry
-        $privatekey = array_shift($privatekey);
+        $this->eZDataType(
+            EZ_DATATYPESTRING_RECAPTCHA,
+            "reCAPTCHA",
+            array(
+                'serialize_supported' => false,
+                'translation_allowed' => false
+            )
+        );
     }
-    $recaptcha_challenge_field = $http->postVariable('recaptcha_challenge_field');
-    $recaptcha_response_field = $http->postVariable('recaptcha_response_field');
-    $resp = recaptcha_check_answer ($privatekey,
-                                $_SERVER["REMOTE_ADDR"],
-                                $recaptcha_challenge_field,
-                                $recaptcha_response_field);
-    return $resp->is_valid;
-  }
 
+    public function validateObjectAttributeHTTPInput(
+        $http,
+        $base,
+        $objectAttribute
+    ) {
+        if ($this->reCAPTCHAValidate($http)) {
+            return eZInputValidator::STATE_ACCEPTED;
+        }
+
+        $objectAttribute->setValidationError(ezpI18n::tr('extension/recaptcha', "The reCAPTCHA wasn't entered correctly. Please try again."));
+        return eZInputValidator::STATE_INVALID;
+    }
+
+    public function validateCollectionAttributeHTTPInput($http, $base, $objectAttribute)
+    {
+        if ($this->reCAPTCHAValidate($http)) {
+            return eZInputValidator::STATE_ACCEPTED;
+        }
+
+        $objectAttribute->setValidationError(ezpI18n::tr('extension/recaptcha', "The reCAPTCHA wasn't entered correctly. Please try again."));
+        return eZInputValidator::STATE_INVALID;
+    }
+
+    public function isIndexable()
+    {
+        return false;
+    }
+
+    public function isInformationCollector()
+    {
+        return true;
+    }
+
+    public function hasObjectAttributeContent($contentObjectAttribute)
+    {
+        return false;
+    }
+
+    public function reCAPTCHAValidate($http)
+    {
+        $http = \eZHTTPTool::instance();
+        $gRecaptchaResponse = $http->hasPostVariable('g-recaptcha-response')
+            ? $http->postVariable('g-recaptcha-response')
+            : '';
+
+        $projectIni = \eZINI::instance('project.ini');
+        $secret = $projectIni->variable('Site', 'RecaptchaSecret');
+        $recaptcha = new \ReCaptcha\ReCaptcha($secret);
+
+        $resp = $recaptcha->verify($gRecaptchaResponse, $_SERVER['REMOTE_ADDR']);
+
+        if ($resp->isSuccess()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
-eZDataType::register( EZ_DATATYPESTRING_RECAPTCHA, "recaptchaType" );
+eZDataType::register(EZ_DATATYPESTRING_RECAPTCHA, "recaptchaType");

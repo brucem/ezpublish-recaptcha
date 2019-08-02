@@ -1,0 +1,9 @@
+{
+    "name": "aplia/recaptcha",
+    "description": "An ezPublish datatype attribute for objects that require recaptcha validation.",
+    "type": "library",
+    "require": {
+        "google/recaptcha": "1.1"
+    },
+    "license": "GPL v2"
+}

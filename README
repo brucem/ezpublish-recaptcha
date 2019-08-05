@@ -34,7 +34,7 @@ Follow these steps to add the reCAPTCHA module to your eZ publish installation:
   2) Edit site.ini.append in /settings/override. Add the following to the file:
 
        [ExtensionSettings]
-       ActiveExtensions[]=recaptcha
+       ActiveExtensions[]=ezpublish-recaptcha
 
      If you already have the [ExtensionSettings] block, just add the second line.
 

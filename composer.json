@@ -3,7 +3,9 @@
     "description": "An ezPublish datatype attribute for objects that require recaptcha validation.",
     "type": "library",
     "require": {
-        "google/recaptcha": "1.1"
+        "google/recaptcha": "1.1",
+        "php": ">=5.3",
+        "composer/composer": ">=1.0"
     },
     "license": "GPL v2"
 }

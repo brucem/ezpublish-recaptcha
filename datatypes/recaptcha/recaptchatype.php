@@ -46,7 +46,8 @@ class recaptchaType extends eZDataType
         $base,
         $objectAttribute
     ) {
-        if ($this->reCAPTCHAValidate($http)) {
+        $isLoggedIn = eZUser::currentUser()->isLoggedIn();
+        if ($isLoggedIn || $this->reCAPTCHAValidate($http)) {
             return eZInputValidator::STATE_ACCEPTED;
         }
 
@@ -56,7 +57,8 @@ class recaptchaType extends eZDataType
 
     public function validateCollectionAttributeHTTPInput($http, $base, $objectAttribute)
     {
-        if ($this->reCAPTCHAValidate($http)) {
+        $isLoggedIn = eZUser::currentUser()->isLoggedIn();
+        if ($isLoggedIn || $this->reCAPTCHAValidate($http)) {
             return eZInputValidator::STATE_ACCEPTED;
         }
 

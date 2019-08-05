@@ -1,9 +1,9 @@
 <?php /* #?ini charset="utf-8"?
 
 [TemplateSettings]
-ExtensionAutoloadPath[]=recaptcha
+ExtensionAutoloadPath[]=ezpublish-recaptcha
 
 [RegionalSettings]
-TranslationExtensions[]=recaptcha
+TranslationExtensions[]=ezpublish-recaptcha
 
 */ ?>

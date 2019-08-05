@@ -4,8 +4,8 @@
 <context>
     <name>extension/recaptcha</name>
     <message>
-        <location filename="recaptchatype.php" line="55"/>
-        <location filename="recaptchatype.php" line="63"/>
+        <location filename="recaptchatype.php" line="71"/>
+        <location filename="recaptchatype.php" line="84"/>
         <source>reCAPTCHA ble ikke skrevet inn korrekt. Prøv igjen.</source>
         <translation type="unfinished"></translation>
     </message>

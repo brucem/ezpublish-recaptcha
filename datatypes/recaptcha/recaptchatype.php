@@ -46,13 +46,15 @@ class recaptchaType extends eZDataType
         $bypassAccess = false;
 
         $projectIni = \eZINI::instance('project.ini');
-        $allowedSiteAccess = $projectIni->variable('Recaptcha', 'AllowedSiteaccess');
+        $allowedSiteAccess = $projectIni->variable('Recaptcha', 'AllowedSiteAccess');
+        $currentSiteAccess = $GLOBALS['eZCurrentAccess']['name'];
         if (is_array($allowedSiteAccess)) {
-            // Checks if any allowed siteaccesses are in the current siteaccess
-            $bypassAccess = !count(array_intersect($allowedSiteAccess, $GLOBALS['eZCurrentAccess']));
+            $bypassAccess = in_array($currentSiteAccess, $allowedSiteAccess);
         } else {
-            $bypassAccess = in_array($allowedSiteAccess, $GLOBALS['eZCurrentAccess']);
+            $bypassAccess = $currentSiteAccess == $allowedSiteAccess;
         }
+
+        return $bypassAccess;
     }
 
     public function validateObjectAttributeHTTPInput(
@@ -66,7 +68,7 @@ class recaptchaType extends eZDataType
             return eZInputValidator::STATE_ACCEPTED;
         }
 
-        $objectAttribute->setValidationError(ezpI18n::tr('extension/recaptcha', "The reCAPTCHA wasn't entered correctly. Please try again. :-)"));
+        $objectAttribute->setValidationError(ezpI18n::tr('extension/recaptcha', "The reCAPTCHA wasn't entered correctly. Please try again."));
         return eZInputValidator::STATE_INVALID;
     }
 
@@ -79,7 +81,7 @@ class recaptchaType extends eZDataType
         }
 
 
-        $objectAttribute->setValidationError(ezpI18n::tr('extension/recaptcha', "The reCAPTCHA wasn't entered correctly. Please try again. :-("));
+        $objectAttribute->setValidationError(ezpI18n::tr('extension/recaptcha', "The reCAPTCHA wasn't entered correctly. Please try again."));
         return eZInputValidator::STATE_INVALID;
     }
 

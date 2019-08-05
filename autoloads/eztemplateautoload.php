@@ -21,10 +21,7 @@
 
 $eZTemplateOperatorArray = array();
 $eZTemplateOperatorArray[] = array(
-	'script' => 'recaptchatemplateoperator.php', 
-	'class' => 'reCAPTCHATemplateOperator', 
-	'operator_names' => array ( 'recaptcha_get_html' ), 
+    'script' => 'extension/ezpublish-recaptcha/autoloads/recaptchatemplateoperator.php',
+    'class' => 'reCAPTCHATemplateOperator',
+    'operator_names' => array ( 'recaptcha_get_html' ),
 );
-
-?>
-

@@ -54,6 +54,20 @@ To use, simply add a reCAPTCHA attribute and InformationCollection attribute to 
 
 recaptcha_get_html($key = null)
 
+PS!
+----------------
+By default this extension will also require reCAPTCHA input on edits done to the object itself in eZPublish. To bypass this, you can edit which siteaccess will be allowed through without checking for reCAPTCHA.
+Edit your project.ini and add the following:
+    [Recaptcha]
+    AllowedSiteaccess=allowed siteaccess
+
+    or
+
+    [Recaptcha]
+    AllowedSiteaccess[]
+    AllowedSiteaccess[]=first allowed
+    AllowedSiteaccess[]=second allowed
+
 License
 -----------------
 

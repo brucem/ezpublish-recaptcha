@@ -41,14 +41,28 @@ class recaptchaType extends eZDataType
         );
     }
 
+    private static function bypassRecaptcha()
+    {
+        $bypassAccess = false;
+
+        $projectIni = \eZINI::instance('project.ini');
+        $allowedSiteAccess = $projectIni->variable('Recaptcha', 'AllowedSiteaccess');
+        if (is_array($allowedSiteAccess)) {
+            // Checks if any allowed siteaccesses are in the current siteaccess
+            $bypassAccess = !count(array_intersect($allowedSiteAccess, $GLOBALS['eZCurrentAccess']));
+        } else {
+            $bypassAccess = in_array($allowedSiteAccess, $GLOBALS['eZCurrentAccess']);
+        }
+    }
+
     public function validateObjectAttributeHTTPInput(
         $http,
         $base,
         $objectAttribute
     ) {
-        $isLoggedIn = eZUser::currentUser()->isLoggedIn();
-        \eZDebug::writeDebug($isLoggedIn, "IsLoggedIn");
-        if ($isLoggedIn || $this->reCAPTCHAValidate($http)) {
+        $bypassAccess = self::bypassRecaptcha();
+
+        if ($bypassAccess || $this->reCAPTCHAValidate($http)) {
             return eZInputValidator::STATE_ACCEPTED;
         }
 
@@ -58,12 +72,12 @@ class recaptchaType extends eZDataType
 
     public function validateCollectionAttributeHTTPInput($http, $base, $objectAttribute)
     {
-        die();
-        $isLoggedIn = eZUser::currentUser()->isLoggedIn();
-        \eZDebug::writeDebug($isLoggedIn, "IsLoggedIn");
-        if ($isLoggedIn || $this->reCAPTCHAValidate($http)) {
+        $bypassAccess = self::bypassRecaptcha();
+        
+        if ($bypassAccess || $this->reCAPTCHAValidate($http)) {
             return eZInputValidator::STATE_ACCEPTED;
         }
+
 
         $objectAttribute->setValidationError(ezpI18n::tr('extension/recaptcha', "The reCAPTCHA wasn't entered correctly. Please try again. :-("));
         return eZInputValidator::STATE_INVALID;

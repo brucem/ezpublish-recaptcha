@@ -1,7 +1,7 @@
 <?php /* #?ini charset="utf-8"?
 
 [DataTypeSettings]
-ExtensionDirectories[]=recaptcha
+ExtensionDirectories[]=ezpublish-recaptcha
 AvailableDataTypes[]=recaptcha
 
 */ ?>

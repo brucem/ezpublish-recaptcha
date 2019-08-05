@@ -47,22 +47,25 @@ class recaptchaType extends eZDataType
         $objectAttribute
     ) {
         $isLoggedIn = eZUser::currentUser()->isLoggedIn();
+        \eZDebug::writeDebug($isLoggedIn, "IsLoggedIn");
         if ($isLoggedIn || $this->reCAPTCHAValidate($http)) {
             return eZInputValidator::STATE_ACCEPTED;
         }
 
-        $objectAttribute->setValidationError(ezpI18n::tr('extension/recaptcha', "The reCAPTCHA wasn't entered correctly. Please try again."));
+        $objectAttribute->setValidationError(ezpI18n::tr('extension/recaptcha', "The reCAPTCHA wasn't entered correctly. Please try again. :-)"));
         return eZInputValidator::STATE_INVALID;
     }
 
     public function validateCollectionAttributeHTTPInput($http, $base, $objectAttribute)
     {
+        die();
         $isLoggedIn = eZUser::currentUser()->isLoggedIn();
+        \eZDebug::writeDebug($isLoggedIn, "IsLoggedIn");
         if ($isLoggedIn || $this->reCAPTCHAValidate($http)) {
             return eZInputValidator::STATE_ACCEPTED;
         }
 
-        $objectAttribute->setValidationError(ezpI18n::tr('extension/recaptcha', "The reCAPTCHA wasn't entered correctly. Please try again."));
+        $objectAttribute->setValidationError(ezpI18n::tr('extension/recaptcha', "The reCAPTCHA wasn't entered correctly. Please try again. :-("));
         return eZInputValidator::STATE_INVALID;
     }
 

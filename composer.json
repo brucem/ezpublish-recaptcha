@@ -1,7 +1,7 @@
 {
     "name": "aplia/ezpublish-recaptcha",
     "description": "An ezPublish datatype attribute for objects that require recaptcha validation.",
-    "type": "library",
+    "type": "ezpublish-legacy-extension",
     "require": {
         "google/recaptcha": "1.1",
         "php": ">=5.3",

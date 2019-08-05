@@ -1,5 +1,5 @@
 {
-    "name": "aplia/recaptcha",
+    "name": "aplia/ezpublish-recaptcha",
     "description": "An ezPublish datatype attribute for objects that require recaptcha validation.",
     "type": "library",
     "require": {
